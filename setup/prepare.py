@@ -68,11 +68,13 @@ def main(args):
 
     real_data = []
 
-    for item in train_data:
+    to_remove_from_fake = []
+    for train_count, item in enumerate(train_data):
         context = item["article"]
         # Take only the first question
         if not len(item["questions"]) > 0:
             print(item["questions"])
+            to_remove_from_fake.append(train_count)
             continue
         question = item["questions"][0]
         answer = asNum(item["answers"][0])
@@ -94,6 +96,11 @@ def main(args):
         all_contexts = [a.rstrip() for a in f.readlines()]
 
     fake_data = organise_data(all_gen_questions, all_contexts)
+    # Remove the examples missing from the real data
+    to_remove_from_fake = to_remove_from_fake[::-1]
+    for val in to_remove_from_fake:
+        _ = fake_data.pop(val)
+
 
     # Check that there is the same amount of data in both files
     if len(fake_data) == len(real_data):
