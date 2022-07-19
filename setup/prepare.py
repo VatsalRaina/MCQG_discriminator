@@ -71,6 +71,8 @@ def main(args):
     for item in train_data:
         context = item["article"]
         # Take only the first question
+        if not len(item["questions"]) > 0:
+            continue
         question = item["questions"][0]
         answer = asNum(item["answers"][0])
         options = item["options"][0]
