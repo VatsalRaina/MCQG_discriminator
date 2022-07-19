@@ -72,6 +72,7 @@ def main(args):
         context = item["article"]
         # Take only the first question
         if not len(item["questions"]) > 0:
+            print(item["questions"])
             continue
         question = item["questions"][0]
         answer = asNum(item["answers"][0])
@@ -99,6 +100,8 @@ def main(args):
         print("Lengths match :)")
     else:
         print("Something went wrong :(")
+        print(len(fake_data))
+        print(len(real_data))
 
     with open(args.save_dir+'real.json', 'w') as f:
         json.dump(real_data, f)
