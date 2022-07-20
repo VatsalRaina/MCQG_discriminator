@@ -101,6 +101,14 @@ def main(args):
     for val in to_remove_from_fake:
         _ = fake_data.pop(val)
 
+    # make sure formatting of contexts of real and fake match exactly
+    real_data_corrected = []
+    for real_item, fake_item in zip(real_data, fake_data):
+        curr_item = real_item
+        curr_item["context"] = fake_item["context"]
+        real_data_corrected.append(curr_item)
+    real_data = real_data_corrected
+
 
     # Check that there is the same amount of data in both files
     if len(fake_data) == len(real_data):
