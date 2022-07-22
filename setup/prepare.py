@@ -22,7 +22,10 @@ tokenizer = T5Tokenizer.from_pretrained("t5-base")
 
 def organise_data(questions, contexts):
     organised_data = []
+    count = 0
     for question, context in zip(questions, contexts):
+        count += 1
+        print(count, len(questions))
         first_sep_pos = question.find("[SEP]")
         qu = question[:first_sep_pos]
         opts = []
@@ -73,6 +76,7 @@ def main(args):
 
     to_remove_from_fake = []
     for train_count, item in enumerate(train_data):
+        print(train_count, len(train_data))
         context = item["article"]
         # Take only the first question
         if not len(item["questions"]) > 0:
