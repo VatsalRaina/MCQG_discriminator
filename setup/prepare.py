@@ -9,6 +9,7 @@ import argparse
 import os
 import sys
 import json
+from transformers import T5Tokenizer
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--gen_questions_path', type=str,  help='Specify path to generated questions on training set')
@@ -16,6 +17,8 @@ parser.add_argument('--gen_contexts_path', type=str,  help='Specify path to cont
 parser.add_argument('--train_data_path', type=str, help='Load path of training data of RACE++')
 parser.add_argument('--save_dir', type=str,  help='Specify path to save generated jsons')
 
+# Everything will be tokenized and de-tokenized to make consistent
+tokenizer = T5Tokenizer.from_pretrained("t5-base")
 
 def organise_data(questions, contexts):
     organised_data = []
@@ -33,8 +36,8 @@ def organise_data(questions, contexts):
                 opt = question
             else:
                 opt = question[:sep_pos]
-            opts.append(opt)
-        curr_point = {'question': qu, 'context': context, 'options':opts, 'label':0}
+            opts.append(tokenizer.decode(tokenizer.encode(opt)))
+        curr_point = {'question': tokenizer.decode(tokenizer.encode(qu)), 'context': context, 'options':opts, 'label':0}
         # print(curr_point)
         organised_data.append(curr_point)
     return organised_data
@@ -84,8 +87,8 @@ def main(args):
         for opt_count, opt in enumerate(options):
             if opt_count == answer:
                 continue
-            new_opts.append(opt)
-        curr_item = {"question": question, "context": context, "options": new_opts, "label":0}
+            new_opts.append(tokenizer.decode(tokenizer.encode(opt)))
+        curr_item = {"question": tokenizer.decode(tokenizer.encode(question)), "context": context, "options": new_opts, "label":0}
         real_data.append(curr_item)
 
     # Now let's prepare the fake data

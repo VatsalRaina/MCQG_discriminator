@@ -74,7 +74,7 @@ def main(args):
         context = item["context"]
         question = item["question"]
         options = item["options"]
-        combo = question + " [SEP] " + context
+        combo = question
         for opt in options:
             combo = combo + " [SEP] " + opt
         combo = combo + " [SEP] " + context
