@@ -39,8 +39,8 @@ def organise_data(questions, contexts):
                 opt = question
             else:
                 opt = question[:sep_pos]
-            opts.append(tokenizer.decode(tokenizer.encode(opt)))
-        curr_point = {'question': tokenizer.decode(tokenizer.encode(qu)), 'context': context, 'options':opts, 'label':0}
+            opts.append(tokenizer.decode(tokenizer.encode(opt), skip_special_tokens=True, clean_up_tokenization_spaces=True))
+        curr_point = {'question': tokenizer.decode(tokenizer.encode(qu), skip_special_tokens=True, clean_up_tokenization_spaces=True), 'context': context, 'options':opts, 'label':0}
         # print(curr_point)
         organised_data.append(curr_point)
     return organised_data
@@ -91,8 +91,8 @@ def main(args):
         for opt_count, opt in enumerate(options):
             if opt_count == answer:
                 continue
-            new_opts.append(tokenizer.decode(tokenizer.encode(opt)))
-        curr_item = {"question": tokenizer.decode(tokenizer.encode(question)), "context": context, "options": new_opts, "label":0}
+            new_opts.append(tokenizer.decode(tokenizer.encode(opt), skip_special_tokens=True, clean_up_tokenization_spaces=True))
+        curr_item = {"question": tokenizer.decode(tokenizer.encode(question), skip_special_tokens=True, clean_up_tokenization_spaces=True), "context": context, "options": new_opts, "label":0}
         real_data.append(curr_item)
 
     # Now let's prepare the fake data
